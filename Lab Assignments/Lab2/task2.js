@@ -1,80 +1,94 @@
 //Task 2
 class Employee{
-    constructor(name,designation,department,salary,experience){
-        this.name = name;
-        this.designation = designation;
-        this.department = department;
-        this.salary = salary;
-        this.experience = experience;
+    constructor(name=" ",department ="general"){
+        this.name = name;        
+        this.department = department;       
     }
     empRecord(){
-       console.log("-----Employee Information------");
-    console.log("Name:",this.name,"Designation:",this.designation,"Department:",this.department,"Salary:",this.salary,"Experience:",this.experience,"years");
+        console.log("----Employee Record----");
+        console.log("Name:",this.name,"Dept:",this.department);
     }
 }
 
 
-class Manager{
-    constructor(name,gender,department,salary,hire_date){
-        this.name = name;
-        this.gender = gender;
-        this.department = department;
-        this.salary = salary;
-        this.hire_date = hire_date;
+class Manager extends Employee{
+    constructor(name =" ",department ="general",reports=[]){
+        super(name,department);
+        this.reports = reports;
+       
     }
-    manRecord(){
+    managerRecord(){
         console.log("-----Manager Information-----");
-        console.log("Name:",this.name,"Gender:",this.gender,"Dept:",this.department,"Salary:",this.salary,"Hire_date:",this.hire_date);
+        console.log("Name:",this.name,"Dept:",this.department);
+        if(this.reports === 0){
+            console.log("None");
+        }else{
+            console.log("Reports")
+            this.reports.forEach((r, i) => {
+            console.log(`${i + 1}. ${r.name || r}`);
+         });
+
+        }
     }
 }
 
-class WorkerBee{
-    constructor(name,age,gender,projects,hire_date){
-        this.name = name;
-        this.age = age;
-        this.gender = gender;
-        this.projects = projects;
-        this.hire_date = hire_date;   
-
+class WorkerBee extends Employee{
+    constructor(name =" ",department="general",projects=[]){
+       super(name,department)
+        this.projects = projects; 
     }
     workerRecord(){
         console.log("-----Worker Record-----");
-        console.log("Name:",this.name,"Age:",this.age,"Gender:",this.gender,"Projects:",this.projects,"Hire_date:",this.hire_date);
+        console.log("Name:",this.name,"Dept:",this.department);
+        console.log("Projects:", this.projects.length ? this.projects.join(", ") : "None");
     }
 }
 
-class SalesPerson{
-      constructor(name,order_received,deliveries,salary){
-        this.name = name;
-        this.order_received = order_received;
-        this.deliveries = deliveries;
-        this.salary = salary;
+class SalesPerson extends WorkerBee{
+      constructor(name=" ",projects =[],quota=100){
+        super(name,"Sales",projects)
+        this.quota = quota;
       }
       salesRecord(){
         console.log("-----Sales Person Record----")
-        console.log("Name:",this.name,"Order_rec:",this.order_received,"Deliveries:",this.deliveries,"Salary:",this.salary);
-      }
+        console.log("Name:",this.name,"Dept:",this.department,"Quota:",this.quota);
+        console.log("Projects:", this.projects.length ? this.projects.join(", ") : "None");  
+    }
 }
 
-class Engineer{
-    constructor(name,id,salary,field){
-        this.name = name;
-        this.id = id;
-        this.salary = salary;
-        this.field = field;
+class Engineer extends WorkerBee{
+    constructor(name =" ",projects,machine=" "){
+        super(name,"Engineering",projects);
+        this.machine = machine;
     }
     engRecord(){
         console.log("-----Engineer Information----- ");
-        console.log("Name:",this.name,"ID:",this.id,"Salary:",this.salary,"Field:",this.field);
+        console.log("Name:",this.name,"Dept:",this.department,"Projects:",this.projects,"Machine:",this.machine);
+        console.log("Projects:", this.projects.length ? this.projects.join(", ") : "None");
     }
 }
-const emp = new Employee("Zain Abbasi","Internee","HR",25000,1);
-emp.empRecord();
-const man = new Manager("Shahan Waheed","male","HR",90000,"23-4-2024");
-man.manRecord();
-const work = new WorkerBee("Haroon Riaz",21,"male",25,"23-09-2022");
-work.workerRecord();
-const sp = new SalesPerson("Atif Ali",25,20,45000 );
-sp.salesRecord();
-const eng = new Engineer("Faria Khan",101,95000,"Artificial Intelligence");
-eng.engRecord();
+//employee objects
+const e1 = new Employee("Sheryar khan");
+const e2 = new Employee("Talha Raiq");
+//manager objects
+const m1 = new Manager("Shahan Waheed","Sales",[e1]);
+const m2 = new Manager("Muhammad Fahad","Engineering",[e2]);
+//workerbee objects
+const wb1 = new WorkerBee("Niha Khan","Sales",["Proj A"]);
+const wb2 = new WorkerBee("Asma Batool","Engineering",["Project B"]);
+//salesperson objects
+const s1 = new SalesPerson("Sameer Ali",["Module 1"],120);
+const s2 = new SalesPerson("Sidra Bibi",["Module 2"],115);
+//Engineer objects
+const eng1 = new Engineer("Hamza Ahmed",[],"Lathe-200");
+const eng2 = new Engineer("Saman Parveen",["Module 1"],"Fax-111");
+e1.empRecord();
+e2.empRecord();
+m1.managerRecord();
+m2.managerRecord();
+wb1.workerRecord();
+wb2.workerRecord();
+s1.salesRecord();
+s2.salesRecord();
+eng1.engRecord();
+eng2.engRecord();

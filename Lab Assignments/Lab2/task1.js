@@ -2,84 +2,135 @@
 
 
 //Task 1
-class Person{
-    constructor(name,age,gender,address){
+function Person(name = "Faizan Akram",age = 21,gender = "male",address = "Street no 4, main line,Gulberg Green,Lahore"){
         this.name = name;
         this.age = age;
         this.gender = gender;
         this.address = address;
         
     }
-    personRecord(){
-        console.log("------Person Information------");
-        console.log("Name:",this.name,"Age:",this.age,"Gender:",this.gender,"Address:",this.address);
-    }
-}
-class Student{
-    constructor(name,reg_no,program,cgpa){
-        this.name = name;
-        this.reg_no = reg_no;
-        this.program = program;
-        this.cgpa = cgpa;
-           }
-        studRecord(){
-            console.log("-----Student Information------");
-            console.log("Name:",this.name,"Reg_no:",this.reg_no,"Program:",this.program,"CGPA:",this.cgpa);
-        }
-}
-class Employee {
-    constructor(name,designation,department,salary,experience){
-        this.name = name;
+
+function Employee(name,age,gender,address,designation,department,salary){
+       Person.call(this,name,age,gender,address)
         this.designation = designation;
         this.department = department;
         this.salary = salary;
-        this.experience = experience;
+       
     }
-    empRecord(){
+
+    Employee.prototype = Object.create(Person.prototype); 
+    Employee.prototype.constructor = Employee;
+
+    Employee.prototype.empRecord = function(){
        console.log("-----Employee Information------");
-    console.log("Name:",this.name,"Designation:",this.designation,"Department:",this.department,"Salary:",this.salary,"Experience:",this.experience,"years");
+    console.log("Name:",this.name,"Age:",this.age,"Gender:",this.gender,"Designation:",this.designation,"Department:",this.department,"Salary:",this.salary,"Address:",this.address);
     }
-}
 
 
-class Teacher {
-    constructor(name,scale,advisor) {
-        this.name = name;
-        this.scale = scale;
-        this.advisor = advisor;      
-       }
-       techRecord(){
-        console.log("-----Teacher Information------");
-        console.log("Name:",this.name,"Scale:",this.scale,"Program:",this.advisor,"CGPA:",this.advisor);
-       }
-}
-
-
-class Staff {
-    constructor(hire_date,salary,status){
+function Staff(name,age,gender,address,designation,department,salary,hire_date,working_hours){
+        Employee.call(this,name,age,gender,address,designation,department,salary);
         this.hire_date = hire_date;
-         this.salary = salary;
-        this.status = status;
+        this.working_hours = working_hours;
+       
     }
-    staffRecord(){
+    Staff.prototype = Object.create(Employee.prototype); 
+    Staff.prototype.constructor = Staff;
+    Staff.prototype.staffRecord = function(){
         console.log("-----Staff Information------");
-       console.log("Hire-date:",this.hire_date,"Salary:",this.salary,"Status:",this.status);
+       console.log("Name:",this.name,"Hire-date:",this.hire_date,"Salary:",this.salary,"Working_hours:",this.working_hours);
 
     }
+
+
+function Courses(course_id,course_name,credit_hours){
+        this.course_id = course_id;
+        this.course_name = course_name;
+        this.credit_hours = credit_hours;
+    }
+
+
+function Student(name,age,gender,address,reg_no,program,cgpa){
+        Person.call(this,name,age,gender,address);
+        this.reg_no = reg_no;
+        this.program = program;
+        this.cgpa = cgpa;
+        this.courses = []; //this is aggregation
+    }
+    Student.prototype = Object.create(Person.prototype);
+    Student.prototype.constructor = Student;
+   Student.prototype.studRecord =function() {
+    console.log("-----Student Information------");
+    console.log("Name:", this.name, "Reg_no:", this.reg_no, "Program:", this.program, "CGPA:", this.cgpa);
+}
+     Student.prototype.addCourse = function(course) {
+        this.courses.push(course);
+    }
+    Student.prototype.showCourses = function() {
+        console.log(this.name,"Courses:");
+        this.courses.forEach(c => {
+            console.log(c.course_name,c.credit_hours," hrs");
+        });
 }
 
 
-const per1 = new Person("Shahan Waheed",21,"Male","VPO Attock");
-per1.personRecord();
-const stud1 = new Student("Ahmed Raza","SP23-BCS-056","CS",3.67);
-stud1.studRecord();
-const emp1 = new Employee("Mehreen Wahab","HOD","CS",90000,10)
-emp1.empRecord();
-const teach1 = new Teacher("M.Ayyaz",18,"SP23-BSE");
-teach1.techRecord();
-const st1 = new Staff("23-4-2024",50000,"Co-worker");
-st1.staffRecord();
+function Teacher(name,age,gender,address,designation,department,salary,experience,advisor){
+        Employee.call(this,name,age,gender,address,designation,department,salary);
+        this.experience = experience;
+        this.advisor = advisor;
+        this.courses = [];
+    }
+    Teacher.prototype = Object.create(Employee.prototype);
+    Teacher.prototype.constructor = Teacher;
 
-//Task 2
+    Teacher.prototype.techRecord =function() {
+    console.log("-----Teacher Information------");
+    console.log("Name:", this.name, "Department:", this.department, "Advisor:", this.advisor, "Experience:", this.experience);
+}
+     Teacher.prototype.assignCourse = function(course){
+        this.courses.push(course);
+    }
+    Teacher.prototype.showCourses = function() {
+        console.log(this.name,"is teaching.");
+        this.courses.forEach(c => {
+            console.log(c.course_name,c.credit_hours,"hrs");
+        });
+}
+
+//object declaration
+//student objects
+const s1 = new Student("Haroon Riaz",21,"male","Attock","SP24-BCS-011","CS",3.45);
+const s2 = new Student("Niha Khan",22,"female","Islamabad","SP22-BSE-010","SE",3.67);
+//teacher objects
+const t1 = new Teacher("Ayaz Khan",32,"male","Attock","Assistent Professor","CS",75000,"8 years","SP23-BSE");
+const t2 = new Teacher("Dr. Muntaha",38,"female","Islamabad","Professor","CS",90000,"12 years","SP23-BCS");
+//staff objects
+const st1 = new Staff("Tayyab Tahir",54,"male","Attock","Assistent Professor","EE",78000,"23-5-2015",15);
+const st2 = new Staff("Hammad Haider",43,"male","Attock","Lecturer","EE",50000,"23-11-2022",22);
+
+s1.studRecord();
+s2.studRecord();
+t1.techRecord();
+t2.techRecord();
+st1.staffRecord();
+st2.staffRecord();
+
+// create some courses
+const c1 = new Courses("CS101","Programming Fundamentals",3);
+const c2 = new Courses("CS201","Data Structures",4);
+const c3 = new Courses("CS301","Database Systems",3);
+s1.addCourse(c1);
+s1.addCourse(c2);
+s2.addCourse(c2);
+s2.addCourse(c3);
+t1.assignCourse(c1);
+t1.assignCourse(c3);
+t2.assignCourse(c2);
+s1.showCourses();
+s2.showCourses();
+t1.showCourses();
+t2.showCourses();
+
+
+
 
 
